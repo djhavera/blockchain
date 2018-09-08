@@ -43,7 +43,7 @@ class Blockchain{
 
     async getBlock(blockHeight) { 
         const block = await leveldb.getBlock(blockHeight);
-        console.log(block);
+        //console.log(block);
         return block; 
     } // end getBlock
     
@@ -57,82 +57,68 @@ class Blockchain{
             let blockHash = block.hash;
             // remove block hash to test block integrity 
             block.hash = ''; 
-            console.log("BLOCKHASH____________________" + blockHash);
+            //console.log("BLOCKHASH____________________" + blockHash);
             let validBlockHash = SHA256(JSON.stringify(block)).toString(); 
-            console.log("VALIDBLOCKHASH____________________" + validBlockHash);
-            console.log('Validate Block: ' + JSON.stringify(block).toString());
+            //console.log("VALIDBLOCKHASH____________________" + validBlockHash);
+            //console.log('Validate Block: ' + JSON.stringify(block).toString());
             if (blockHash === validBlockHash) { 
-                console.log('Block #' + blockHeight + ' validated'); 
+                console.log('Block #' + blockHeight + ' validated by validateBlock()'); 
                 return true; } 
             else { console.log('Block #' + blockHeight + ' invalid hash:\n' + blockHash + '<>' + validBlockHash); 
-                    return false; } 
+                return false; } 
       } // the end of validateBlock function       
 
-                
-    } // End Blockchain Class
-        // Compare 
-        /*
-        if (blockHash === validBlockHash) 
-        { 
-            console.log('Block #' + blockHeight + ' is validated'); 
-            return true; } 
-        else { 
-            console.log('Block #' + blockHeight + ' contains an invalid hash:\n' + blockHash + '<>' + validBlockHash); 
-            return false; }
-
-  async validateChain() { 
-    let errorLog = [] ;
-    let previousHash = '' ;
-    let isValidBlock = false;
-    
-    // get chain height (height of latest persisted block)
-    const height = await this.getBlockHeight();
-    // loop over all blocks in persisted chain
-    for (let i = 0; i <= height; i++) {
-        this.getBlock(i).then((block) => {
-        // validation of current block
-        isValidBlock = this.validateBlock(block.height);
-        if (!isValidBlock) {
-            errorLog.push(i);
-        } 
-        // validate previous persisted block hash matches currenBlock.previousHash 
-        if (block.previousBlockHash !== previousHash) {
-            errorLog.push(i);
-        }
-        previousHash = block.hash
-        // logging errors to console
-        if (i === (height -1)) {
-            if (errorLog.length > 0) {
-            //console.log('Block errors =' + ${errorLog.length});
-            //console.log('Blocks:' + ${errorLog});
-        console.log('Errors detected');
-    
-            } else {
-            console.log('No errors detected');
+    async validateChain() { 
+        let errorLog = [] ;
+        let previousHash = '' ;
+        let isValidBlock = false;  // default false so that it assumes a mismatch
+        
+        const height = await this.getBlockHeight();
+        // loop over blocks
+        for (let i = 0; i <= height; i++) {
+            this.getBlock(i).then((block) => {
+            // validation of current block
+            isValidBlock = this.validateBlock(block.height);
+            //console.log('isValidBlock ' + isValidBlock)
+            if (!isValidBlock) {
+                console.log('!isValidBlock')
+                errorLog.push(i);
+            } 
+            // validate previous persisted block hash matches currenBlock.previousHash 
+            if (block.previousBlockHash !== previousHash) {
+                errorLog.push(i);
             }
-        }
-        });
-        } //end of for loop
-    } // end of validateChain method       
+            previousHash = block.hash
+            // logging errors to console
+            //if (i === (height -1)) {
+            if (errorLog.length > 0) {
+                console.log('Block errors =' + errorLog.length);
+                console.log('Blocks:' + errorLog);
+                console.log('Errors detected');
+        
+            } else {
+                console.log('No errors detected');
+            }
+            
+            });
+            } //end of for loop
+            console.log('Error Log Length ' + errorLog.length);
+        } // end of validateChain method       
+           
+    } // End Blockchain Class  
 
-
-(function theLoop (i) {
-	setTimeout(function () {
-        let blockchain = new Blockchain();
-		let blockTest = blockchain.addBlock(new Block("test data "+i));
-		blockchain.addBlock(blockTest).then((result) => {
-			console.log(result);
-			i++;
-			if (i < 10) theLoop(i);
-		});
-	}, 10);
-  })(0);
-*/
 let blockchain = new Blockchain();
 //blockchain.addBlock(new Block("David data "+300));
 //blockchain.getBlockHeight();
-blockchain.getBlock(69);
-blockchain.validateBlock(69); 
+blockchain.getBlock(25);
+//blockchain.validateBlock(2);
+//blockchain.addBlock(new Block("David data "+100));
+//blockchain.addBlock(new Block("David data "+200));
+//blockchain.addBlock(new Block("David data "+300));
+
+//blockchain.validateChain(); 
+
+
   
 
   
