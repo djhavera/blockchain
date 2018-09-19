@@ -29,4 +29,18 @@ Built With Node.js Express Level_DB Contributing
 
 Versioning We use SemVer for versioning.
 
+Dependencies:
+
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "crypto-js": "^3.1.9-1",
+    "deferred-leveldown": "^4.0.2",
+    "encoding": "^0.1.12",
+    "express": "^4.16.3",
+    "level": "^4.0.0",
+    "leveldown": "^4.0.1",
+    "npm": "^6.2.0"
+  }
+}
+
 Authors David Havera
