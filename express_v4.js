@@ -13,10 +13,11 @@ const port = process.env.PORT || 8000;
 let blockchain = new bc();
 
 
+/*
 app.get('/block', function (req,res) {
     res.end("Welcome to my Blockchain API!")
     });
-
+*/
 app.get('/block/:id',async (req,res)=>{
     const blockRes = await blockchain.getBlock(req.params.id);
     if(blockRes) {
