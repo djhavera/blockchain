@@ -7,25 +7,20 @@ const leveldb = require('./levelSandbox');
 const SHA256 = require('crypto-js/sha256');
 const bc = require('./app3'); 
 const Block = require('./block'); 
-const port = process.env.PORT || 8000;
+//const port = process.env.PORT || 8000;
 
 
 let blockchain = new bc();
 
-
-/*
-app.get('/block', function (req,res) {
-    res.end("Welcome to my Blockchain API!")
-    });
-*/
-app.get('/block/:id',async (req,res)=>{
-    const blockRes = await blockchain.getBlock(req.params.id);
-    if(blockRes) {
-        res.send(blockRes) //.JSON
-    } else {
-        res.status(404).send("Block Not Found")
-    }
-    });
+app.get('/block/:id', (req,res)=>{
+    blockchain.getBlock(req.params.id)
+        .then((bloc) => {
+        res.send((bloc));
+      })
+      .catch(function(bloc) {
+        return res.status(422).json( { errors: { id: "The Block was not in the Chain." }})
+      })
+    })
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -40,7 +35,8 @@ app.post('/block',async (req,res)=>{
     }
     });
 
- app.listen(port)
-     console.log('Server started! At http://localhost:' + port); //http://localhost:8000 http://localhost:8000/block
+app.listen(8000);
+ //app.listen(port)
+     console.log('Server started! At http://localhost:8000'); //http://localhost:8000 http://localhost:8000/block
  
 
