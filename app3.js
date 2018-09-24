@@ -1,6 +1,7 @@
 const leveldb = require('./levelSandbox'); 
 const SHA256 = require('crypto-js/sha256');
-
+const Block = require('./block'); 
+/*
 class Block{
   constructor(data){
      this.hash = "";
@@ -10,11 +11,14 @@ class Block{
      this.previousBlockHash = "";
     }
 }
+*/
 
 class Blockchain{ 
+    
     constructor(){ 
     this.getBlockHeight().then((height) => { 
-    if (height === -1){ 
+    
+        if (height === -1){ 
     this.addBlock(new Block("Genesis Block")).then(() => console.log("Genesis Block added")); }});
     }
     
@@ -43,7 +47,7 @@ class Blockchain{
 
     async getBlock(blockHeight) { 
         const block = await leveldb.getBlock(blockHeight);
-        //console.log(block);
+        console.log(block);
         return block; 
     } // end getBlock
     
@@ -79,7 +83,7 @@ class Blockchain{
             this.getBlock(i).then((block) => {
             // validation of current block
             isValidBlock = this.validateBlock(block.height);
-            //console.log('isValidBlock ' + isValidBlock)
+            console.log('isValidBlock ' + isValidBlock)
             if (!isValidBlock) {
                 console.log('!isValidBlock')
                 errorLog.push(i);
@@ -107,12 +111,14 @@ class Blockchain{
            
     } // End Blockchain Class  
 
-let blockchain = new Blockchain();
+module.exports = Blockchain;
+
+//let blockchain = new Blockchain();
 //blockchain.addBlock(new Block("David data "+300));
 //blockchain.getBlockHeight();
-blockchain.getBlock(25);
+//blockchain.getBlock(0);
 //blockchain.validateBlock(2);
-//blockchain.addBlock(new Block("David data "+100));
+//blockchain.addBlock(Block("David data "+100));
 //blockchain.addBlock(new Block("David data "+200));
 //blockchain.addBlock(new Block("David data "+300));
 
