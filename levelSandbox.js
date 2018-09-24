@@ -3,8 +3,9 @@
 |  =============================================================*/
 
 const level = require('level'); 
-const chainDB = './chaindata7'; // storage location of dataset
+const chainDB = './chaindata98'; // storage location of dataset
 const db = level(chainDB); //This will create or open the underlying LevelDB store.
+const Block = require('./block'); 
 
 function addBlock(key, value){ 
   return new Promise((resolve, reject) => { 
@@ -21,9 +22,9 @@ function getBlock (key) {
         return console.log("NotFoundError (Please Enter a Valid Height)")
       }
       // I/O or other error
-      return callback(err)
+        return callback(err)
       }
-
+    //console.log(value)
     resolve(JSON.parse(value)); }); }); }
 
 
@@ -40,3 +41,4 @@ function getBlockHeight() {
         resolve(height); }); }); }
     
 module.exports = { getBlock, getBlockHeight, addBlock};
+
